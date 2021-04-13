@@ -1,10 +1,6 @@
-﻿using Dapper;
-using Discount.API.Entities;
+﻿using Discount.API.Entities;
 using Microsoft.Extensions.Configuration;
-using Npgsql;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace Discount.API.Repositories
@@ -26,21 +22,32 @@ namespace Discount.API.Repositories
         }
 
 
-        public Task<bool> CreateDiscount(Coupon coupon)
+        public async Task<bool> CreateDiscount(Coupon coupon)
         {
-            throw new NotImplementedException();
+            var isSaved = await InsertData("INSERT INTO Coupon(ProductName, Description, Amount) VALUES(@ProductName, @Description, @Amount)",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount });
+
+            return isSaved;
         }
 
-        public Task<bool> DeleteDiscount(string productName)
+        public async Task<bool> UpdateDiscount(Coupon coupon)
         {
-            throw new NotImplementedException();
+            var isUpdated = await UpdateData("UPDATE Coupon SET ProductName=@ProductName, Description = @Description, Amount = @Amount WHERE Id = @Id",
+                            new { ProductName = coupon.ProductName, Description = coupon.Description, Amount = coupon.Amount, Id = coupon.Id });
+
+            return isUpdated;
+        }
+
+        public async Task<bool> DeleteDiscount(string productName)
+        {
+            var isDeleted = await UpdateData("DELETE FROM Coupon WHERE ProductName = @ProductName",
+                             new { ProductName = productName });
+
+            return isDeleted;
         }
 
 
 
-        public Task<bool> UpdateDiscount(Coupon coupon)
-        {
-            throw new NotImplementedException();
-        }
+       
     }
 }

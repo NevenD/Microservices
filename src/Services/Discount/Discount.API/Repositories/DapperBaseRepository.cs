@@ -32,5 +32,74 @@ namespace Discount.API.Repositories
                 throw;
             }
         }
+
+
+        public async Task<bool> InsertData(string query, object parameters = null)
+        {
+            try
+            {
+                using NpgsqlConnection conn
+                       = new(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+                // it returns affected count, if affected count is greater than zero then its saved
+                var affected = await conn.ExecuteAsync(query, parameters);
+
+                if (affected ==0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                //Handle the exception
+                throw;
+            }
+        }
+
+        public async Task<bool> UpdateData(string query, object parameters = null)
+        {
+            try
+            {
+                using NpgsqlConnection conn
+                       = new(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+                // it returns affected count, if affected count is greater than zero then its updated
+                var affected = await conn.ExecuteAsync(query, parameters);
+
+                if (affected == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                //Handle the exception
+                throw;
+            }
+        }
+
+        public async Task<bool> DeleteData(string query, object parameters = null)
+        {
+            try
+            {
+                using NpgsqlConnection conn
+                       = new(_configuration.GetValue<string>("DatabaseSettings:ConnectionString"));
+                var affected = await conn.ExecuteAsync(query, parameters);
+
+                if (affected == 0)
+                {
+                    return false;
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                //Handle the exception
+                throw;
+            }
+        }
     }
 }
