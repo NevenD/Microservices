@@ -2,6 +2,7 @@
 using MediatR;
 using Microsoft.Extensions.Logging;
 using Ordering.Application.Contracts.Persistance;
+using Ordering.Application.Exceptions;
 using Ordering.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -31,7 +32,7 @@ namespace Ordering.Application.Features.Orders.Commands.UpdateOrder
 
             if (orderToUpdate == null)
             {
-                _logger.LogInformation("Order does not exists!");
+                throw new NotFoundException(nameof(Orders), request.Id);
             }
 
             _mapper.Map(request, orderToUpdate,  typeof(UpdateOrderCommand), typeof(Order));
