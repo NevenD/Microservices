@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Ordering.Domain.Entities;
 namespace Ordering.Application.Features.Orders.Commands.DeleteOrder
 {
     public class DeleteOrderCommandHandler : IRequestHandler<DeleteOrderCommand>
@@ -30,7 +30,7 @@ namespace Ordering.Application.Features.Orders.Commands.DeleteOrder
             var orderToDelete = await _orderRepository.GetByIdAsync(request.Id);
             if (orderToDelete == null)
             {
-                throw new NotFoundException(nameof(Orders), request.Id);
+                throw new NotFoundException(nameof(Order), request.Id);
             }
             await _orderRepository.DeleteAsync(orderToDelete);
             _logger.LogInformation("Order deleted successfully!");

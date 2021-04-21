@@ -33,13 +33,11 @@ namespace Ordering.Application.Features.Orders.Commands.CheckoutOrder
         {
             var orderEntity = _mapper.Map<Order>(request);
             var newOrder = await _orderRepository.AddAsync(orderEntity);
-
             _logger.LogInformation($"Order for user: {request.UserName} is created");
 
             await SendMail(newOrder);
 
             return newOrder.Id;
-
         }
 
         private async Task SendMail(Order newOrder)
