@@ -18,6 +18,7 @@ namespace Ordering.Application.Exceptions
         public ValidationException(IEnumerable<ValidationFailure> failures)
             : this()
         {
+            // dobivamo informaciju u kojim validatorima dobivamo error
             Errors = failures
                 .GroupBy(e => e.PropertyName, e => e.ErrorMessage)
                 .ToDictionary(failureGroup => failureGroup.Key, failureGroup => failureGroup.ToArray());
